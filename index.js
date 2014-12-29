@@ -8,7 +8,7 @@ function RiakMock(options) {
   }
   this.app = express();
   this.app.use(new Routes());
-  this.options = _.defaults(defaultOptions, options);
+  this.options = _.defaults(options, defaultOptions);
 }
 
 RiakMock.prototype.start = function(callback) {
