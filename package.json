@@ -1,6 +1,6 @@
 {
   "name": "riak-mock-server",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "A server mocking the behavior of a riak server but with simple in memory storage. Once quit everything will be lost.",
   "main": "index.js",
   "scripts": {
@@ -16,5 +16,9 @@
   "devDependencies": {
     "chai": "^1.10.0",
     "request": "^2.51.0"
+  },
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/maurermax/riak-mock-server.git"
   }
 }
