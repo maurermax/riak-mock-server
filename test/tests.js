@@ -240,6 +240,42 @@ describe('All tests', function() {
         });
       });
     });
+
+    it('executes a proper mapreduce query with a ends_with key filter', function(done) {
+      populateBuckets(function() {
+        request.put({ url: baseUrl + '/riak/bucket1/key_endsWithA', json: { content1: 'val3' }, headers: { "x-riak-index-text_bin": "indexVal3", "x-riak-index-number_int": "3" } }, function() {
+          request.put({ url: baseUrl + '/riak/bucket1/key_also_endsWithA', json: { content2: 'val4' }, headers: { "x-riak-index-text_bin": "indexVal4", "x-riak-index-number_int": "4" }}, function(){
+            request.put({ url: baseUrl + '/riak/bucket1/key_endsWithA_Not', json: { content2: 'val5' }, headers: { "x-riak-index-text_bin": "indexVal5", "x-riak-index-number_int": "5" }}, function(){
+              request.post({ url: baseUrl + '/mapred', json: {"inputs":{"bucket":"bucket1","index":"number_int","key_filters":[["ends_with", "endsWithA"]]},"query":[{"map":{"language":"javascript","source":"function(v) { return [{key: v.key, data: v.values[0].data}]; }","keep":true}}]} }, function(err, res) {
+                expect(res.headers['content-type']).to.contain('json');
+                expect(res.statusCode).to.equal(200);
+                expect(res.body).to.have.length(2);
+                done();
+              });
+            });
+          });
+        });
+
+      });
+    });
+
+    it('executes a proper mapreduce query with a starts_with key filter', function(done) {
+      populateBuckets(function() {
+        request.put({ url: baseUrl + '/riak/bucket1/startsWithA_key', json: { content1: 'val3' }, headers: { "x-riak-index-text_bin": "indexVal3", "x-riak-index-number_int": "3" } }, function() {
+          request.put({ url: baseUrl + '/riak/bucket1/startsWithA_key_also', json: { content2: 'val4' }, headers: { "x-riak-index-text_bin": "indexVal4", "x-riak-index-number_int": "4" }}, function(){
+            request.put({ url: baseUrl + '/riak/bucket1/starts_not_WithA_key', json: { content2: 'val5' }, headers: { "x-riak-index-text_bin": "indexVal5", "x-riak-index-number_int": "5" }}, function(){
+              request.post({ url: baseUrl + '/mapred', json: {"inputs":{"bucket":"bucket1","index":"number_int","key_filters":[["starts_with", "startsWithA"]]},"query":[{"map":{"language":"javascript","source":"function(v) { return [{key: v.key, data: v.values[0].data}]; }","keep":true}}]} }, function(err, res) {
+                expect(res.headers['content-type']).to.contain('json');
+                expect(res.statusCode).to.equal(200);
+                expect(res.body).to.have.length(2);
+                done();
+              });
+            });
+          });
+        });
+
+      });
+    });
     it('passes arguments to handling function', function(done) {
       populateBuckets(function() {
         request.post({ url: baseUrl + '/mapred', json: {"inputs":"bucket1","query":[{"map":{"language":"javascript","source":"function(v, key, args) { return [args.val]; }", "keep":true, "arg":{"val":"test"}}}]}}, function(err, res) {
