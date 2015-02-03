@@ -255,7 +255,6 @@ describe('All tests', function() {
             });
           });
         });
-
       });
     });
 
@@ -273,7 +272,6 @@ describe('All tests', function() {
             });
           });
         });
-
       });
     });
     it('passes arguments to handling function', function(done) {
