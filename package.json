@@ -1,12 +1,15 @@
 {
   "name": "riak-mock-server",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "A server mocking the behavior of a riak server but with simple in memory storage. Once quit everything will be lost.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Max Maurer <max.maurer@netlight.com>",
+  "contributors": [
+    "Markus Zilller <markus.ziller@netlight.com>"
+  ],
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.10.0",
